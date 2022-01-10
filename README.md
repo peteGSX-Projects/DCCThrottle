@@ -10,7 +10,11 @@ This is very much a work-in-progress. The project compiles and runs under VSCODE
 Platformio, however currently on my laptop compiling under Arduino IDE produces a problem
 with duplicate WiFI libraries.
 
-The TFT_eSPI library by BODMER is required to control the TFT LCD screen.
+The /bTFT_eSPIb/ library by BODMER is required to control the TFT LCD screen.  
+The User_Setup.h
+file included here should be copied to the TFT_e_SPI library directory.  This defines the 
+setup for the TFT LCD display.
+
 Two rotary encoders are used to provide two throttle channels.
 
 Current Situation
