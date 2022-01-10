@@ -14,6 +14,7 @@ The TFT_eSPI library by BODMER is required to control the TFT LCD screen.
 Two rotary encoders are used to provide two throttle channels.
 
 #Current Situation
+
 The project currently has the following limitations
 1. The loco address for each of the two channels is currently hard coded.
 2. A ROSTER data structure is provided to define  range of loco's.
