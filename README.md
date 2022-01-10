@@ -10,14 +10,16 @@ This is very much a work-in-progress. The project compiles and runs under VSCODE
 Platformio, however currently on my laptop compiling under Arduino IDE produces a problem
 with duplicate WiFI libraries.
 
-The /bTFT_eSPIb/ library by BODMER is required to control the TFT LCD screen.  
-The User_Setup.h
-file included here should be copied to the TFT_e_SPI library directory.  This defines the 
-setup for the TFT LCD display.
+The **TFT_eSPI** library by **BODMER** is required to control the TFT LCD screen.  
+The User_Setup.hfile included here should be copied to the TFT_e_SPI library directory.  
+This defines thesetup for the TFT LCD display.
 
 Two rotary encoders are used to provide two throttle channels.
 
-Current Situation
+The code to monitor the Rotary Encoders was provided by **Ralph Bacon** based on theory from
+https://www.pinteric.com/rotary.html
+
+**Current Situation**
 
 The project currently has the following limitations
 1. The loco address for each of the two channels is currently hard coded.
@@ -27,7 +29,7 @@ The project currently has the following limitations
 5. The function key page can be switched between channels.
 6. The concept of operating two locos simultaneously is proven to work.
 
-Planned Enhancements
+**Planned Enhancements**
 1. The DCC++EX development team have added a ROSTER feature to the CS.  Hopefully
 in the next release commands will be available to download this data to a throttle.
 2. A selection screen will be written to select the required locos from a ROSTER list.
@@ -35,7 +37,7 @@ in the next release commands will be available to download this data to a thrott
 4. The function key pages will be extended to display all function keys for each channel
 5. Battery monitoring will be added.
 
-Please note
+**Please note**
 It is not intended to add CV programming to this throttle.  For this function I use a
 second CS connected to JMRI.
 
