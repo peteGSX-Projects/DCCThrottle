@@ -4,8 +4,8 @@
 #include "stdio.h"
 #include "display.h"
 
-char ssid[] = "DCCEX_c25024";          //  your network SSID (name)
-char pass[] = "Monarch1466";   // your network password
+char ssid[] = "DCCEX_c25024";     //  your DCC++ SSID (name)
+char pass[] = "Password";         // your DCC++ password
 char host[] = "192.168.4.1";
 int port = 2560;
 
