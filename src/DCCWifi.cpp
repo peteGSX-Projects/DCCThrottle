@@ -4,8 +4,8 @@
 #include "stdio.h"
 #include "display.h"
 
-char ssid[] = "DCCEX_c25024";     //  your DCC++ SSID (name)
-char pass[] = "Password";         // your DCC++ password
+char ssid[] = "DCCEX_c25024";          //  your CS Name
+char pass[] = "Password";   // your CS password
 char host[] = "192.168.4.1";
 int port = 2560;
 
@@ -64,7 +64,7 @@ void WiFiSetup() {
   }  
 
   Serial.printf("WiFi connected with (local) IP address of: %s\n", WiFi.localIP().toString().c_str());
-	wiFiDisconnected = false;
+  wiFiDisconnected = false;
 
   Serial.println("");
   Serial.println("WiFi connected");
@@ -89,35 +89,6 @@ void WiFiSetup() {
 }
 
 
-// Convert the WiFi (error) response to a string we can understand
-// const char * wl_status_to_string(wl_status_t status)
-// {
-
-// 	switch (status)
-  
-// 	{
-// 	case WL_NO_SHIELD:
-// 		return "WL_NO_SHIELD";
-// 	case WL_IDLE_STATUS:
-// 		return "WL_IDLE_STATUS";
-// 	case WL_NO_SSID_AVAIL:
-// 		return "WL_NO_SSID_AVAIL";
-// 	case WL_SCAN_COMPLETED:
-// 		return "WL_SCAN_COMPLETED";
-// 	case WL_CONNECTED:
-// 		return "WL_CONNECTED";
-// 	case WL_CONNECT_FAILED:
-// 		return "WL_CONNECT_FAILED";
-// 	case WL_CONNECTION_LOST:
-// 		return "WL_CONNECTION_LOST";
-// 	case WL_DISCONNECTED:
-// 		return "WL_DISCONNECTED";
-// 	default:
-// 		return "UNKNOWN";
-// 	}  
-  
-// }
-
 
 void DoDCCThrottle(int Channel) {
 
@@ -135,6 +106,56 @@ void DoDCCFunction(int fx, int onof){
   DCCclient.printf("<F %i %i %i>\n", LocoAddress[CurrentChannel], fx, onof);
 
 }
+
+void GetTheInput() {
+
+
+  while (!DCCclient.available()){
+    delay(50);
+  }
+  while (DCCclient.available()) {
+        String line = DCCclient.readStringUntil('\r');
+        Serial.print(line);
+    }
+  
+  
+}
+
+
+void DoDCCRoster(){
+
+// If you send <J>  I will reply 
+// <j cabid "name"> for each loco in the roster. 
+  Serial.print("<J>\n");
+
+  DCCclient.print("<J>\n");  // send the command to request the roster.
+
+  // read the results and print them
+
+  // check if data is available
+
+  GetTheInput();
+
+
+}
+
+void DoDCCFunctionKeys(int Channel){
+
+  int locoaddress = 7309;
+
+  // Send the command for the selected loco
+  //Serial.printf("<J %i>\n"), LocoAddress[Channel];
+  Serial.printf("<J %i>\n", locoaddress);
+
+  //DCCclient.printf("<J %i>\n"), LocoAddress[Channel];
+  DCCclient.printf("<J %i>\n", locoaddress);
+
+   GetTheInput();
+
+}
+
+
+
 
 void DoDCCPower(int onof){
 
