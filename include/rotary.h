@@ -2,7 +2,7 @@
 #define ROTARY_H
 
 extern int LocoAddress[2];
-extern char LocoName[2][15];
+extern char LocoName[2][18];
 extern int LocoDirection[2];
 extern int LocoSpeed[2];
 extern int CurrentChannel;
