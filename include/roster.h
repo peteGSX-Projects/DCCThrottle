@@ -1,5 +1,7 @@
-#ifndef ROTARY_H
-#define ROTARY_H
+#ifndef ROSTER_H
+#define ROSTER_H  
+
+#include <arduino.h>
 
 extern LOCO_ROSTER LOCOS[];
 extern LOCAL_ROSTER LOCALLOCOS[];     // Prime with defaults
@@ -19,9 +21,10 @@ extern String LOCONAME;
 
 extern String DefaultRosterFkeys;
 
-void StartEncoders();
-void CheckEncoders();
-
-
+void ParseRoster();
+void ParseKeys();
+void CopyDefaults();
+void GetRoster();
+void GetFunctionKeys();
 
 #endif

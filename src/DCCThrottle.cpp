@@ -2,26 +2,46 @@
 // Initial ESP32 test
 
 #include <Arduino.h>
-
+#ifndef FILESTRUCT_H 
+    #include "filestruct.h"
+#endif
 #include "DCCThrottle.h"
 #include "display.h"
 #include "rotary.h"
 #include "DCCWifi.h"
+#include "roster.h"
 
-int ButtonPressed;
 
-// String readBattery(){
-//   uint8_t percentage = 100;
-//   //float voltage = analogRead(35) / 4096.0 * 7.23;      // LOLIN D32 (no voltage divider need already fitted to board.or NODEMCU ESP32 with 100K+100K voltage divider
-//   float voltage = analogRead(39) / 4096.0 * 7.23;    // NODEMCU ESP32 with 100K+100K voltage divider added
-//   //float voltage = analogRead(A0) / 4096.0 * 4.24;    // Wemos / Lolin D1 Mini 100K series resistor added
-//   //float voltage = analogRead(A0) / 4096.0 * 5.00;    // Ardunio UNO, no voltage divider required
-//   Serial.println("Voltage = " + String(voltage));
-//   percentage = 2808.3808 * pow(voltage, 4) - 43560.9157 * pow(voltage, 3) + 252848.5888 * pow(voltage, 2) - 650767.4615 * voltage + 626532.5703;
-//   if (voltage > 4.19) percentage = 100;
-//   else if (voltage <= 3.50) percentage = 0;
-//   return String(percentage)+"%";
-// }
+
+int ButtonPressed = 0;
+
+
+//String DefaultRosterFkeys = "Light/Sound/Brake/*Whistle/*Whistle/QS/*Coal/Blower/Blower/*Guard/*Injector/*Dcock/Aux/*Tannoy/*Wheel/*Noise/*Doors/SetOff/*Whistle/*Couple/Shunt/*Blower/*Buffer/*Whistle/*Whistle/F25/F26/*Vol -/*Vol +";
+ //String RosterFKeys[2][29];
+    
+// bool FKeyLock[2][29];
+
+// int MAXLOCOS = 0;
+// int LocoAddress[2] = {7309,5275};
+// char LocoName[2][18] = {"Jinty","42xx 2-8-0 Tank"};
+// int LocoDirection[2] = {1, 1};
+// int LocoSpeed[2] = {0, 0};
+// int CurrentChannel = 0;
+// int FunctionPressed = 0;
+// bool PowerOn = true;
+// bool SoundOn[2] = {false, false};
+// String readString = "";
+// int ADDRESS = 0; //loco address
+// String LOCONAME = "";
+
+LOCAL_ROSTER LOCALLOCOS[] = {        // Prime with defaults
+  { 7309, "LMS Jinty"},
+  { 5275, "42xx 2-8-0 Tank"},
+  { 3433, "City of Bath"},
+  { 6110, "Large Prarie"},
+  { 7246, "72xx 2-8-2 Tank"} 
+};
+
 
 void setup()
 {
@@ -33,11 +53,11 @@ void setup()
 
 
     Serial.println("Sending Roster Command");
-    DoDCCRoster();          // Get the roster data from the server
+    GetRoster();          // Get the roster data from the server
 
     //Serial.println("Getting FKeys for Channel 0");
 
-    DoDCCFunctionKeys(0);      // Get the functions for loco on channel 0
+    GetFunctionKeys();      // Get the functions for loco on channel 0
 
     MainScreenHeader();
 
@@ -66,9 +86,6 @@ void loop()
         break;
     }
 
-    
-    
-    //Serial.println(readBattery());
     
 
 }

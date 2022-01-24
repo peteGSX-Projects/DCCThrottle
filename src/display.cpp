@@ -17,15 +17,20 @@
 // The SPIFFS (FLASH filing system) is used to hold touch screen
 // calibration data
 
-#include "FS.h"
+//#include "FS.h"
 
 #include <SPI.h>
 #include <TFT_eSPI.h>      // Hardware-specific library
 
 
 #include "Free_Fonts.h" // Include the header file attached to this sketch
+
+#ifndef FILESTRUCT_H 
+   #include "filestruct.h"
+#endif
 #include "display.h"
 #include "DCCWiFi.h"
+
 
 TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
 
@@ -190,7 +195,7 @@ void ShowAddress(int Channel){
       tft.setTextColor(TFT_YELLOW, TFT_BLACK);
       
       //tft.print(LocoName[Channel]);
-      tft.drawString(LocoName[Channel], 10,50, 2);
+      tft.drawString(LocoName[Channel], 10,50);
 
       break;
 
