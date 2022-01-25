@@ -1,20 +1,6 @@
 #ifndef DISPLAY_H  
 #define DISPLAY_H  
 
-// extern struct LOCO_ROSTER  
-// {
-//   unsigned int address;
-//   String description;
-// };
-
-// extern LOCO_ROSTER LOCOS[];
-
-// extern struct LOCAL_ROSTER
-// {
-//   unsigned int address;
-//   String description[18];
-// };
-// extern LOCAL_ROSTER LOCALLOCOS[];   // Prime with defaults
 
 extern int LocoAddress[2];
 extern int MAXLOCOS;

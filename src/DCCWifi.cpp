@@ -1,8 +1,7 @@
 #include <Arduino.h>
 
-#ifndef FILESTRUCT_H 
-    #include "filestruct.h"
-#endif
+#include "filestruct.h"
+
 
 #include "DCCWifi.h"
 #include "stdio.h"

@@ -25,9 +25,9 @@
 
 #include "Free_Fonts.h" // Include the header file attached to this sketch
 
-#ifndef FILESTRUCT_H 
-   #include "filestruct.h"
-#endif
+
+#include "filestruct.h"
+
 #include "display.h"
 #include "DCCWiFi.h"
 

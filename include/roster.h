@@ -3,8 +3,6 @@
 
 #include <arduino.h>
 
-extern LOCO_ROSTER LOCOS[];
-extern LOCAL_ROSTER LOCALLOCOS[];     // Prime with defaults
 
 extern int LocoAddress[2];
 extern int MAXLOCOS;

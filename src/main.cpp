@@ -2,16 +2,17 @@
 // Initial ESP32 test
 
 #include <Arduino.h>
-#ifndef FILESTRUCT_H 
-    #include "filestruct.h"
-#endif
-#include "DCCThrottle.h"
+
+#include "filestruct.h"
+
+#include "main.h"
 #include "display.h"
 #include "rotary.h"
 #include "DCCWifi.h"
 #include "roster.h"
 
-
+struct LOCO_ROSTER LOCOS[20];
+struct LOCAL_ROSTER LOCALLOCOS[20];     // Prime with defaults
 
 int ButtonPressed = 0;
 
@@ -34,13 +35,7 @@ int ButtonPressed = 0;
 // int ADDRESS = 0; //loco address
 // String LOCONAME = "";
 
-LOCAL_ROSTER LOCALLOCOS[] = {        // Prime with defaults
-  { 7309, "LMS Jinty"},
-  { 5275, "42xx 2-8-0 Tank"},
-  { 3433, "City of Bath"},
-  { 6110, "Large Prarie"},
-  { 7246, "72xx 2-8-2 Tank"} 
-};
+
 
 
 void setup()

@@ -4,20 +4,6 @@
 #include <WiFi.h>
 #include <SPI.h>
 
-// extern struct LOCO_ROSTER  
-// {
-//   unsigned int address;
-//   String description;
-// };
-
-// extern LOCO_ROSTER LOCOS[];
-
-// extern struct LOCAL_ROSTER
-// {
-//   unsigned int address;
-//   String description[18];
-// };
-// extern LOCAL_ROSTER LOCALLOCOS[];     // Prime with defaults
 
 extern int LocoAddress[2];
 extern int MAXLOCOS;
@@ -39,7 +25,6 @@ extern String RosterFKeys[2][29];
     
 extern bool FKeyLock[2][29];
 
-extern LOCO_ROSTER LOCOS[];
 
 void WiFiSetup();
 void DoDCCThrottle(int Channel);

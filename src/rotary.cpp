@@ -1,8 +1,6 @@
 #include <Arduino.h>
 
-#ifndef FILESTRUCT_H 
-#include "filestruct.h"
-#endif
+
 #include "rotary.h"
 #include "display.h"
 #include "DCCWifi.h"

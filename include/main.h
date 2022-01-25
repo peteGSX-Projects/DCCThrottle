@@ -1,19 +1,7 @@
 #ifndef MAIN_H  
 #define MAIN_H  
 
-// struct LOCO_ROSTER  
-// {
-//   unsigned int address;
-//   String description;
-// };
-// LOCO_ROSTER LOCOS[20];
 
-// struct LOCAL_ROSTER
-// {
-//   unsigned int address;
-//   String description[18];
-// };
-// LOCAL_ROSTER LOCALLOCOS[20];     // Prime with defaults
 
 int MAXLOCOS = 0;
 int LocoAddress[2] = {7309,5275};

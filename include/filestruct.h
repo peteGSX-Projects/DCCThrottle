@@ -1,7 +1,7 @@
 #ifndef FILESTRUCT_H  
 #define FILESTRUCT_H 
 
-//#include <Arduino.h>
+#include <Arduino.h>
 
 struct LOCO_ROSTER  
 {
@@ -9,7 +9,6 @@ struct LOCO_ROSTER
   String description;
 };
 
-extern LOCO_ROSTER LOCOS[];
 
 struct LOCAL_ROSTER
 {
@@ -17,25 +16,18 @@ struct LOCAL_ROSTER
   String description[18];
 };
 
-extern LOCAL_ROSTER LOCALLOCOS[10];     // Prime with defaults
+// //extern LOCAL_ROSTER LOCALLOCOS[10];     // Prime with defaults
+// extern LOCAL_ROSTER LOCALLOCOS[10] = {        // Prime with defaults
+//   { 7309, "LMS Jinty"},
+//   { 5275, "42xx 2-8-0 Tank"},
+//   { 3433, "City of Bath"},
+//   { 6110, "Large Prarie"},
+//   { 7246, "72xx 2-8-2 Tank"} 
+// };
+
+extern struct LOCO_ROSTER LOCOS[20];
+extern struct LOCAL_ROSTER LOCALLOCOS[20];     // Prime with defaults
 
 
-// extern String DefaultRosterFkeys;
-// extern String RosterFKeys[2][29];
-    
-// extern bool FKeyLock[2][29];
-
-// extern int MAXLOCOS;
-// extern int LocoAddress[2];
-// extern char LocoName[2][18];
-// extern int LocoDirection[2];
-// extern int LocoSpeed[2];
-// extern int CurrentChannel;
-// extern int FunctionPressed;
-// extern bool PowerOn;
-// extern bool SoundOn[2];
-// extern String readString;
-// extern int ADDRESS; //loco address
-// extern String LOCONAME;
 
 #endif
