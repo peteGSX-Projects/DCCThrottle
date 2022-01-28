@@ -28,7 +28,7 @@
 #include "globals.h"
 #include "display.h"
 
-//#include "filestruct.h"
+#include "filestruct.h"
 
 #include "DCCWiFi.h"
 
@@ -343,8 +343,11 @@ void DrawRosterList()
   String tempkey;
   int KPos = 0;
   for (uint8_t pos = StartPos; pos <= EndPos; pos++) {
-    
-    strcpy(rosterKey[KPos], ROSTER[pos]);
+    tempkey = char(LOCOS[pos].address);
+    tempkey = + " ";
+    tempkey = tempkey + String(LOCOS[pos].description);
+    tempkey.toCharArray(rosterKey[pos], 30);
+    //strcpy(rosterKey[pos], tempkey)
     KPos++;
   }
   // strcpy(keyLabel[12], "Page");

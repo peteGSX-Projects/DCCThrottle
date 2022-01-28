@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-//#include "filestruct.h"
+#include "filestruct.h"
 
 #include "globals.h"
 #include "DCCWifi.h"
@@ -118,25 +118,26 @@ bool GetTheRoster() {
   readString = "";
 
   while (!DCCclient.available()){
-    if ((millis() - startTime) > 2000){
+    if ((millis() - startTime) > 10000){
         return false;
     }
     else {
-      Serial.println("Waiting for CS Response");
       delay(50);
     }
   }
   int LocoSub = 0;
-  String LocoString;
-
   while (DCCclient.available()) {
         readString = DCCclient.readStringUntil('\r');
         Serial.print(readString);
         ParseRoster(); 
 
-        strcpy(ROSTER[LocoSub], LOCONAME);
-        //LocoString.toCharArray(ROSTER[LocoSub], 29);
-        MAXLOCOS++;
+        //int x =LOCONAME.length;
+        LOCOS[LocoSub].address = ADDRESS;
+        //LOCOS[LocoSub].description = LOCONAME.toCharArray[1, 18];
+        //LOCONAME.toCharArray[LOCOS[LocoSub].description, 18];
+        strcpy(LOCOS[LocoSub].description, LOCONAME);
+        //LOCOS[LocoSub].description = LOCONAME.substring(1,18);
+
         LocoSub = LocoSub + 1;
         readString = "";
     }
@@ -153,7 +154,7 @@ long startTime = millis();
   readString = "";
 
   while (!DCCclient.available()){
-    if ((millis() - startTime) > 2000){
+    if ((millis() - startTime) > 10000){
         return false;
     }
     else {

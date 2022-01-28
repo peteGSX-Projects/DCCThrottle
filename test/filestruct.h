@@ -20,22 +20,22 @@ struct LOCAL_ROSTER
 extern LOCAL_ROSTER LOCALLOCOS[];     // Prime with defaults
 
 
-extern String DefaultRosterFkeys;
-extern String RosterFKeys[2][29];
+//extern String DefaultRosterFkeys;
+//extern String RosterFKeys[2][29];
     
-extern bool FKeyLock[2][29];
+//extern bool FKeyLock[2][29];
 
-extern int MAXLOCOS;
-extern int LocoAddress[2];
-extern char LocoName[2][18];
-extern int LocoDirection[2];
-extern int LocoSpeed[2];
-extern int CurrentChannel;
-extern int FunctionPressed;
-extern bool PowerOn;
-extern bool SoundOn[2];
-extern String readString;
-extern int ADDRESS; //loco address
-extern String LOCONAME;
+// extern int MAXLOCOS;
+// extern int LocoAddress[2];
+// extern char LocoName[2][18];
+// extern int LocoDirection[2];
+// extern int LocoSpeed[2];
+// extern int CurrentChannel;
+// extern int FunctionPressed;
+// extern bool PowerOn;
+// extern bool SoundOn[2];
+// extern String readString;
+// extern int ADDRESS; //loco address
+// extern String LOCONAME;
 
 #endif

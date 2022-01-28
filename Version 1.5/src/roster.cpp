@@ -2,7 +2,7 @@
 #include <arduino.h>
 
 
-//#include "filestruct.h"
+#include "filestruct.h"
 #include "globals.h"
 #include "DCCWifi.h"
 #include "roster.h"
@@ -24,24 +24,22 @@ void ParseRoster(){
       ind2 = readString.indexOf(' ', ind1+1 );   //finds location of second ,
       
       String StringAddress = readString.substring(ind1+1 , ind2);   //captures address
-      int ADDRESS = StringAddress.toInt();
+      ADDRESS = StringAddress.toInt();
       
       ind3 = readString.indexOf('"', ind2+1 );
       ind4 = readString.indexOf('"', ind3+1 );
       
-      char TempLocoName[25];
-      String LocoDesc = readString.substring(ind3+1, ind4); //captures remain part of data after last 
-      LocoDesc.toCharArray(TempLocoName, 25);
+      // String tempstr = readString.substring(ind3+1, ind4); //captures remain part of data after last ,
+      // //int z = length(tempstr);
+      // tempstr.toCharArray(LOCONAME, 18); //captures remain part of data after last ,
+      String temploco = readString.substring(ind3+1, ind4); //captures remain part of data after last 
+      temploco.toCharArray(LOCONAME, 18);
       Serial.print("Loco Address : ");
       Serial.println(StringAddress);
       Serial.println(ADDRESS);
       Serial.print("Loco Name : ");
       Serial.println(LOCONAME);
-     
-      sprintf(LOCONAME , "%i %s", ADDRESS, TempLocoName);
-      Serial.println(LOCONAME);
       
-    
 }
 
 void ParseKeys(){
@@ -167,17 +165,17 @@ String RFkeys = "";
 
 void CopyDefaults(){
 
-  MAXLOCOS = 0;
-  for (int x = 0; x < MAXDEFAULTLOCOS; x++){
+  for (int x = 0; x < MaxDefaults; x++){
+    LOCOS[x].address = LOCALLOCOS[x].address;
     
-    strcpy(ROSTER[x], LOCALROSTER[x]);
-    MAXLOCOS++;
+    strcpy(LOCOS[x].description, LOCALLOCOS[x].description);
+    
     
   }
 }
 
    
-void SetupRoster(){
+void GetRoster(){
 
   bool locosfound = false;
   // issue command for CS to send the roster over.
@@ -186,14 +184,8 @@ void SetupRoster(){
   locosfound = GetTheRoster(); // Read in the data from the CS.  If result is true then data is read.
 
   if (!locosfound) {
-    Serial.println("No roster - copying defaults");
     CopyDefaults();
   }
-
-  for (int x = 0; x < MAXLOCOS; x++) {
-    Serial.println(ROSTER[x]);
-  }
-
 }
 
 void GetFunctionKeys() {
@@ -207,11 +199,8 @@ void GetFunctionKeys() {
 
   if (!fkeysfound) {
     readString = DefaultRosterFkeys;
-    //strcpy(readString, DefaultRosterFkeys);
   }
   
   ParseKeys(); 
     
 }
-
-

@@ -11,29 +11,18 @@
 #include "DCCWifi.h"
 #include "roster.h"
 
-struct LOCO_ROSTER LOCOS[20];
-struct LOCAL_ROSTER LOCALLOCOS[20];     // Prime with defaults
+// struct LOCO_ROSTER LOCOS[20];
+// struct LOCAL_ROSTER LOCALLOCOS[20] = {     // Prime with defaults in case no roster found
+//   { 7309, "LMS Jinty"},
+//   { 5275, "42xx 2-8-0 Tank"},
+//   { 3433, "City of Bath"},
+//   { 6110, "Large Prarie"},
+//   { 7246, "72xx 2-8-2 Tank"} 
+// };
+
 
 int ButtonPressed = 0;
-
-
-//String DefaultRosterFkeys = "Light/Sound/Brake/*Whistle/*Whistle/QS/*Coal/Blower/Blower/*Guard/*Injector/*Dcock/Aux/*Tannoy/*Wheel/*Noise/*Doors/SetOff/*Whistle/*Couple/Shunt/*Blower/*Buffer/*Whistle/*Whistle/F25/F26/*Vol -/*Vol +";
- //String RosterFKeys[2][29];
-    
-// bool FKeyLock[2][29];
-
-// int MAXLOCOS = 0;
-// int LocoAddress[2] = {7309,5275};
-// char LocoName[2][18] = {"Jinty","42xx 2-8-0 Tank"};
-// int LocoDirection[2] = {1, 1};
-// int LocoSpeed[2] = {0, 0};
-// int CurrentChannel = 0;
-// int FunctionPressed = 0;
-// bool PowerOn = true;
-// bool SoundOn[2] = {false, false};
-// String readString = "";
-// int ADDRESS = 0; //loco address
-// String LOCONAME = "";
+bool RosterFound = false;
 
 
 
@@ -54,7 +43,7 @@ void setup()
 
     GetFunctionKeys();      // Get the functions for loco on channel 0
 
-    MainScreenHeader();
+    MainScreen();
 
     Serial.println("Setup completed");
 }
