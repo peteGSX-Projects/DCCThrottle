@@ -23,6 +23,7 @@ bool SoundOn[2] = {false, false};
 String readString = "";
 int ADDRESS; //loco address
 char LOCONAME[30];
+bool WiFiConnected = false;
 
 String RosterFKeys[2][29];
 

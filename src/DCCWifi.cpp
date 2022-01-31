@@ -87,7 +87,7 @@ void WiFiSetup() {
   // if you get a connection, report back via serial:
   if (DCCclient.connect("192.168.4.1", 2560)) {
     Serial.println("connected");
-    
+    WiFiConnected = true;
   } 
       
 
@@ -110,6 +110,20 @@ void DoDCCFunction(int fx, int onof){
 
   DCCclient.printf("<F %i %i %i>\n", LocoAddress[CurrentChannel], fx, onof);
 
+}
+
+void CheckWiFi() {
+
+  // Check the WiFi buffer for any input
+  // Keep the buffer clear
+
+  if (WiFiConnected == true) {
+    readString = "";
+    if (DCCclient.available()) {
+          readString = DCCclient.readStringUntil('\r');
+          Serial.print(readString); // just print it so we can see what is there
+    }
+  }
 }
 
 bool GetTheRoster() {

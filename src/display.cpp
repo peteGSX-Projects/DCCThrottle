@@ -515,13 +515,18 @@ int CheckButtons() {
       //Page button, so draw next page
       if (b == 11) {
         Serial.println("Page Button Pressed");
-        // do something here
+        FKEYPAGE++;
+        if (FKEYPAGE > 3) {
+          FKEYPAGE = 1;
+          DrawKeypad();
+        }
+        
       }
 
       if (b == 12) {
         
-        Serial.println("Loco Button Pressed");
-        // do something here
+        Serial.println("Menu Button Pressed");
+        // do something here - Handled in loop
       }
       
       if (b == 13) {
@@ -553,6 +558,8 @@ int CheckButtons() {
         }
          // Display which loco we are dealing with
         header("Function Keys for : ", LocoAddress[CurrentChannel]);
+        FKEYPAGE = 1; // set to page 1
+        DrawKeypad(); // draw the keys for this channel
 
       }
 

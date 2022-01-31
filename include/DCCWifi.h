@@ -10,6 +10,7 @@
 void WiFiSetup();
 void DoDCCThrottle(int Channel);
 void DoDCCFunction(int fx, int onof);
+void CheckWiFi();
 
 bool GetTheRoster();
 bool GetTheFKeys();

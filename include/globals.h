@@ -18,6 +18,7 @@ extern bool SoundOn[2];
 extern String readString;
 extern int ADDRESS; //loco address
 extern char LOCONAME[30];
+extern bool WiFiConnected;
 
 extern String DefaultRosterFkeys;
 
