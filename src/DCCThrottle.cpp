@@ -50,18 +50,32 @@ void loop()
 
     CheckEncoders();
 
-    ButtonPressed = CheckButtons();
+    switch (CURRENTSCREENPAGE) {
 
-    switch (ButtonPressed) {
+        case 1:
+        ButtonPressed = CheckButtons();
 
-        case 12:
-                // Draw the menu page
+            switch (ButtonPressed) {
+
+                case 12:
+                        // Draw the menu page
+                break;
+
+                default:
+                    // do nothing
+                    // the function keys are already dealt with
+                break;
+            }
         break;
 
-        default:
-            // do nothing
-            // the function keys are already dealt with
+        case 2:
+
         break;
+
+        case 3:
+
+        break;
+
     }
 
     delay(1000);

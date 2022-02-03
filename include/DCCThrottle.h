@@ -24,6 +24,7 @@ String readString = "";
 int ADDRESS; //loco address
 char LOCONAME[30];
 bool WiFiConnected = false;
+int CURRENTSCREENPAGE = 1;
 
 String RosterFKeys[2][29];
 
