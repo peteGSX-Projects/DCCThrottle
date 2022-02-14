@@ -6,12 +6,12 @@
 #include "DCCWifi.h"
 
 // Rotary encoder pins
-#define PIN_A 34
-#define PIN_B 35
-#define PUSH_BTN1 32
-#define PIN_C 25
-#define PIN_D 26
-#define PUSH_BTN2 27
+#define PIN_A 25
+#define PIN_B 26
+#define PUSH_BTN1 27
+#define PIN_C 34
+#define PIN_D 35
+#define PUSH_BTN2 32
 
 // A turn counter for the rotary encoder (negative = anti-clockwise)
 int rotationCounter1 = 0;
@@ -135,7 +135,8 @@ void CheckEncoders()
             Serial.print("Channel 0 Value - ");
             Serial.println(rotationCounter1 * 5);
 
-            LocoSpeed[0] = rotationCounter1 * 5; // go up in fives else its too slow.
+            //LocoSpeed[0] = rotationCounter1 * 5; // go up in fives else its too slow.
+            LocoSpeed[0] = rotationCounter1;
             ShowSpeed(0);
             DoDCCThrottle(0);
 

@@ -139,6 +139,7 @@ String RFkeys = "";
             }
 
           keynumber++;
+          y++;
 
           ind1 = ind2+1;
           if (keynumber >28){
@@ -172,6 +173,8 @@ void CopyDefaults(){
     
     strcpy(ROSTER[x], LOCALROSTER[x]);
     MAXLOCOS++;
+    Serial.print("MAx Locos - ");
+    Serial.println(MAXLOCOS);
     
   }
 }

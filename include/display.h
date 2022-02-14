@@ -15,9 +15,11 @@ void DrawKeypad();
 void DrawNumberPad();
 void MainScreen();
 void RosterScreen();
+void KeypadScreen();
+void CopyRosterItem(int b);
 int CheckButtons();
-int CheckRosterBttons();
-int CheckNumnerPad();
+int CheckRosterButtons();
+bool CheckNumberPad();
 
 
 #endif

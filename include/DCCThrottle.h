@@ -34,7 +34,6 @@ String DefaultRosterFkeys = "<J 1234 \"Dummy\" \"Light/Sound/Brake/*Whistle/*Whi
 bool FKeyLock[2][29];
 
 
-
-
+void WaitForIt(char C);
 
 #endif

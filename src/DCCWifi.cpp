@@ -29,10 +29,12 @@ int status = WL_IDLE_STATUS;
 
 void WiFiSetup() {
 
+
   Serial.println("Attempting to connect to WPA network...");
   Serial.print("SSID: ");
   Serial.println(ssid);
-  screenmessage("Attempting to connect to DCC network...");
+  screenmessage("Attempting to connect to");
+  screenmessage("DCC network...");
 
   WiFi.mode(WIFI_STA);
 
@@ -63,7 +65,8 @@ void WiFiSetup() {
   if (wifiStatus != WL_CONNECTED)
   {
       Serial.println("/nFailed to connect, exiting.");
-      screenmessage("/nFailed to connect, exiting.");
+      screenmessage("Failed to connect");
+      screenmessage(".... exiting.");
       //Serial.printf("WiFi Status: %s\n", wl_status_to_string(wifiStatus));
       return;
   }  
