@@ -9,8 +9,8 @@
 #include "roster.h"
 
 
-char ssid[] = "DCCEX_c25024";          //  your network SSID (name)
-char pass[] = "Monarch1466";   // your network password
+char ssid[] = "DCCEX_yourid";          //  your network SSID (name)
+char pass[] = "password";   // your network password
 char host[] = "192.168.4.1";
 int port = 2560;
 
