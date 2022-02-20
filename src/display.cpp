@@ -38,8 +38,8 @@ TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
 #define CENTRE 160
 
 // Using two fonts since numbers are nice when bold
-#define LABEL1_FONT &FreeSansOblique12pt7b // Key label font 1
-//#define LABEL2_FONT &FreeSansBold12pt7b    // Key label font 2
+//#define LABEL1_FONT &FreeSansOblique12pt7b // Key label font 1
+#define LABEL1_FONT &FreeSansBold12pt7b    // Key label font 2
 #define LABEL2_FONT &FreeSans12pt7b    // Key label font 2
 #define ROTARY_FONT &FreeSerif18pt7b    // display encoder values
 #define NAME_FONT &FreeSans9pt7b
@@ -50,23 +50,24 @@ TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
 
 
 // Numeric display box size and location
-#define DISP_X 120
-#define DISP_Y 85
-#define DISP_W 80
-#define DISP_H 50
+#define DISP_X 100
+#define DISP_Y 90
+#define DISP_W 120
+#define DISP_H 60
 #define DISP_TSIZE 3
 #define DISP_TCOLOR TFT_CYAN
 
-#define NUM_LEN 6
+// variables for the keypad.
+#define NUM_LEN 5
 char numberBuffer[NUM_LEN + 1] = "";
 uint8_t numberIndex = 0;
+int returnvalue;
 
 // We have a status line for messages
 #define STATUS_X 160 // Centred on this
 #define STATUS_Y 450
 
 int FKEYPAGE = 1; // the default start page
-int ROSTERPAGE = 1;
 
 // Create Key Array for Roster List
 char rosterKey[9][25];
@@ -109,9 +110,9 @@ uint16_t keypadColor[12] = {
 
 // Invoke the TFT_eSPI button class and create all the button objects
 TFT_eSPI_Button key[15];
-TFT_eSPI_Button RKey[10];
+TFT_eSPI_Button RKey[8];
 TFT_eSPI_Button NumberKey[12];
-TFT_eSPI_Button ExitKey;
+TFT_eSPI_Button AddrKey;
 TFT_eSPI_Button UpKey;
 TFT_eSPI_Button DownKey;
 
@@ -149,7 +150,7 @@ void header(const char *string, int LAddress)
 {
   tft.setTextSize(2);
   tft.setTextFont(0);
-  tft.setTextColor(TFT_MAGENTA, TFT_BLUE);
+  tft.setTextColor(TFT_WHITE, TFT_BLUE);
   tft.fillRect(0, 155, 320, 25, TFT_BLUE);
   //tft.setTextDatum(TC_DATUM);
   tft.drawString(string, 20, 158, 1); // Font 4 for fast drawing with background
@@ -166,12 +167,13 @@ void TFTSetup() {
   tft.init();
 
   // Set the rotation before we calibrate
-  tft.setRotation(0);
+  tft.setRotation(2);
 
   // Calibrate the touch screen and retrieve the scaling factors
   //touch_calibrate();
   // Replace SPIFFS file read with manual calibration
-  uint16_t calData[5] = { 490, 3200, 320, 3400, 0 };
+  //uint16_t calData[5] = { 490, 3200, 320, 3400, 0 };
+  uint16_t calData[5] = { 361, 3100, 327, 3307, 6 }; // new screen
   tft.setTouch(calData);
 
 
@@ -203,14 +205,16 @@ void ShowAddress(int Channel){
     case 0:
     
       tft.setFreeFont(ADDRESS_FONT);
+      delay(10);
 
       tft.fillRoundRect(1, 1, 80, 40, 3, TFT_RED);
 
       tft.setTextColor(TFT_WHITE, TFT_RED);   
       tft.setCursor(10, 10);
-      tft.drawNumber(LocoAddress[Channel],10, 10, 2);
+      tft.drawNumber(LocoAddress[Channel],10, 5, 2);
 
       tft.setTextFont(GLCD);
+      delay(10);
       //tft.setFreeFont(NAME_FONT);
       tft.setCursor(15, 50);
       tft.setTextColor(TFT_YELLOW, TFT_BLACK);
@@ -230,11 +234,12 @@ void ShowAddress(int Channel){
     case 1:
       
       tft.setFreeFont(ADDRESS_FONT);
-      
+      delay(10);
+
       tft.fillRoundRect(240, 1, 80, 40, 3, TFT_RED);
       tft.setTextColor(TFT_WHITE,TFT_RED);    
       tft.setCursor(10, 10);
-      tft.drawNumber(LocoAddress[Channel],250,10, 2);
+      tft.drawNumber(LocoAddress[Channel],250,5, 2);
 
       //Serial.print("Channel 1 address ");
       //Serial.println(LocoAddress[Channel]);
@@ -242,6 +247,7 @@ void ShowAddress(int Channel){
       tft.setCursor(15, 220);
       tft.setTextColor(TFT_YELLOW, TFT_BLACK);
       tft.setTextFont(GLCD);
+      delay(10);
       //tft.setFreeFont(NAME_FONT);
       if (sizeof(LocoName[Channel]) > 12){
           namelen = 12;
@@ -272,6 +278,7 @@ void ShowSpeed(int Channel){
       tft.fillRoundRect(1, 85, 95, 60, 5, TFT_BLACK);
       tft.drawRoundRect(1, 85, 95, 60, 5, TFT_RED);
       tft.setFreeFont(ROTARY_FONT);
+      delay(10);
 
       tft.setTextColor(TFT_WHITE, TFT_BLACK);   
     
@@ -288,12 +295,12 @@ void ShowSpeed(int Channel){
       {
       
         tft.setTextColor(TFT_GREEN, TFT_BLACK);
-        tft.drawString("Fwd", 100 ,95, 2);
+        tft.drawString("Fwd", 105 ,95, 2);
       }
       else 
       {
         tft.setTextColor(TFT_RED, TFT_BLACK);
-        tft.drawString("Rev", 100,95 ,2);
+        tft.drawString("Rev", 105,95 ,2);
       }
 
       break;
@@ -320,7 +327,7 @@ void ShowSpeed(int Channel){
 
       tft.setTextColor(TFT_WHITE, TFT_BLACK);   
       tft.setFreeFont(ROTARY_FONT);
-
+      delay(10);
   
       tft.drawNumber(LocoSpeed[Channel],230, 90, 4);
       Serial.print("Channel 1 Speed - ");
@@ -348,6 +355,9 @@ int KEY_H = 35;
 int KEY_SPACING_Y = 10;
 int KEY_TEXTSIZE = 2;   // Font size multiplier
 
+int MAXPAGES = MAXLOCOS/8 +1;
+Serial.print("MAx Roster Pages - ");
+Serial.println(MAXPAGES);
 
 
   int StartPos = 0;
@@ -365,6 +375,9 @@ int KEY_TEXTSIZE = 2;   // Font size multiplier
         StartPos = 16;
         EndPos = 20;
         break;
+    case 4:
+        StartPos = 21;
+        EndPos = 28;
   }
 
   if (EndPos > MAXLOCOS) {
@@ -386,7 +399,7 @@ int KEY_TEXTSIZE = 2;   // Font size multiplier
   
   
   // Draw the keys
-  for (uint8_t row = 0; row <= EndPos; row++) {
+  for (uint8_t row = 0; row <= (EndPos - StartPos); row++) {
   
       uint8_t b = row;
       Serial.print("Button Row ");
@@ -405,40 +418,58 @@ int KEY_TEXTSIZE = 2;   // Font size multiplier
             rosterKey[b],  // text
             KEY_TEXTSIZE); // text size
 
+      // Adjust button label Y delta to centre of key
+    
+      RKey[b].setLabelDatum(0, 5);
+
       RKey[b].drawButton();
 
     
   }
 
-  char keyLabel[] = "Back";
+  char keyLabel[] = "Addr.";
 
-  ExitKey.initButton(&tft, 
+  AddrKey.initButton(&tft, 
             60,       // x
             440,    //KEY_Y + row * (KEY_H + KEY_SPACING_Y),  // x, y, w, h, outline, fill, text
             80,        // key width
-            35,        // key height
+            40,        // key height
             TFT_WHITE,    // outline colour
             TFT_RED,  //rkeyColour[b],  // fill colour
             TFT_WHITE,    // text colour
             keyLabel,  // text
             KEY_TEXTSIZE); // text size
-
-  ExitKey.drawButton();   
+  AddrKey.setLabelDatum(0, 5);
+  AddrKey.drawButton();   
 
   
-  strcpy(keyLabel, "Up");
+  if (ROSTERPAGE > 1) {
+  
+    strcpy(keyLabel, "Back");
 
-  UpKey.initButton(&tft, 160, 440, 80, 35,  TFT_WHITE,    // outline colour
-            TFT_GREEN,  TFT_WHITE, keyLabel, KEY_TEXTSIZE); // text size
-  UpKey.drawButton();
+    UpKey.initButton(&tft, 160, 440, 80, 40,  TFT_WHITE,    // outline colour
+              TFT_GREEN,  TFT_WHITE, keyLabel, KEY_TEXTSIZE); // text size
+    UpKey.setLabelDatum(0, 5);
+    UpKey.drawButton();
+  }
 
-  strcpy(keyLabel, "Down");
+  Serial.print("Maxpages ");
+  Serial.println(MAXPAGES);
+  Serial.print("ROSTERPAGE ");
+  Serial.println(ROSTERPAGE);
 
-  UpKey.initButton(&tft, 260, 440, 80, 35,  TFT_WHITE,    // outline colour
-            TFT_GREEN,  TFT_WHITE, keyLabel, KEY_TEXTSIZE); // text size
-  UpKey.drawButton();
+  if (MAXPAGES > 1 && ROSTERPAGE < MAXPAGES){
 
-}
+    strcpy(keyLabel, "Next");
+
+    DownKey.initButton(&tft, 260, 440, 80, 40,  TFT_WHITE,    // outline colour
+              TFT_GREEN,  TFT_WHITE, keyLabel, KEY_TEXTSIZE); // text size
+    DownKey.setLabelDatum(0, 5);
+    DownKey.drawButton();
+  }
+
+} // End of Roster Display
+//-----------------------------------------------------------------------------
 
 void DrawKeypad()
 {
@@ -478,6 +509,12 @@ void DrawKeypad()
     tempkey.toCharArray(keyLabel[KPos],7);
     KPos++;
   }
+  if (FKEYPAGE == 3) {
+    strcpy(keyLabel[7], " ");
+    strcpy(keyLabel[8], " ");
+    strcpy(keyLabel[9], " ");
+    strcpy(keyLabel[10], " ");
+  }
   strcpy(keyLabel[11], "Page");
   strcpy(keyLabel[12], "Select");
   strcpy(keyLabel[13],"Swap");
@@ -497,6 +534,7 @@ void DrawKeypad()
                         KEY_Y + row * (KEY_H + KEY_SPACING_Y), // x, y, w, h, outline, fill, text
                         KEY_W, KEY_H, TFT_WHITE, keyColor[b], TFT_WHITE,
                         keyLabel[b], KEY_TEXTSIZE);
+      key[b].setLabelDatum(0, 5);
       key[b].drawButton();
     }
   }
@@ -517,7 +555,7 @@ void DrawNumberPad()
   int KEY_SPACING_Y = 20;
   int KEY_TEXTSIZE = 1;   // Font size multiplier
 
- 
+  
 
   // Clear the screen
   //tft.fillScreen(TFT_BLACK);
@@ -526,8 +564,8 @@ void DrawNumberPad()
   tft.fillRect(0, 80, 320, 400, TFT_DARKGREY);
 
   // Draw number display area and frame
-  tft.fillRect(130, 90, 80, 50, TFT_BLACK);
-  tft.drawRect(130, 90, 80, 50, TFT_WHITE);
+  tft.fillRect(DISP_X, DISP_Y, DISP_W, DISP_H, TFT_BLACK);
+  tft.drawRect(DISP_X, DISP_Y, DISP_W, DISP_H, TFT_WHITE);
 
   // Draw the keys
   for (uint8_t row = 0; row < 4; row++) {
@@ -536,10 +574,11 @@ void DrawNumberPad()
 
       if (b > 9) tft.setFreeFont(LABEL1_FONT);
       else tft.setFreeFont(LABEL2_FONT);
+      delay(10);
 
       NumberKey[b].initButton(&tft, KEY_X + col * (KEY_W + KEY_SPACING_X),
                         KEY_Y + row * (KEY_H + KEY_SPACING_Y), // x, y, w, h, outline, fill, text
-                        KEY_W, KEY_H, TFT_WHITE, keyColor[b], TFT_WHITE,
+                        KEY_W, KEY_H, TFT_WHITE, keypadColor[b], TFT_WHITE,
                         keypadLabel[b], KEY_TEXTSIZE);
       NumberKey[b].drawButton();
     }
@@ -557,12 +596,18 @@ void MainScreen() {
   tft.setTextSize(2);
   tft.drawCentreString("<- Loco ->", CENTRE, 10, 2);
 
+  delay(10);
+
   ShowAddress(0);
+  delay(10);
   ShowAddress(1);
+  delay(10);
 
   ShowSpeed(0);
+  delay(10);
   
   ShowSpeed(1);
+  delay(10);
   
    // Display which loco we are dealing with
   header("Function Keys for : ", LocoAddress[CurrentChannel]);
@@ -574,6 +619,9 @@ void MainScreen() {
 }
 //-------------------------------------------------------------
 void RosterScreen(){
+
+  CURRENTSCREENPAGE = 2;
+
   tft.fillScreen(TFT_BLACK);
 
   tft.setTextColor(TFT_WHITE);
@@ -586,6 +634,8 @@ void RosterScreen(){
 
 void KeypadScreen(){
 
+  CURRENTSCREENPAGE = 3;
+
   tft.fillScreen(TFT_BLACK);
 
   tft.setTextColor(TFT_WHITE);
@@ -593,12 +643,16 @@ void KeypadScreen(){
 
   DrawNumberPad();
 
+  numberIndex = 0; // initialise the buffer counterchar numberBuffer[NUM_LEN + 1] = "";
+  numberBuffer[0] = NULL;
+
 }
 
 int CheckButtons() {
 
   uint16_t t_x = 0, t_y = 0; // To store the touch coordinates
   int ReturnValue = 0; // value to send back - the key pressed
+  int FunctionKey = 0; // value for DCCfunction
 
   // Pressed will be set true is there is a valid touch on the screen
   bool pressed = tft.getTouch(&t_x, &t_y);
@@ -615,9 +669,6 @@ int CheckButtons() {
 
   // Check if any key has changed state
   for (uint8_t b = 0; b < 15; b++) {
-
-    // if (b < 3) tft.setFreeFont(LABEL1_FONT);
-    // else tft.setFreeFont(LABEL2_FONT);
 
     if (key[b].justReleased()) {
       if (StickyKeys[b] == false)
@@ -643,9 +694,9 @@ int CheckButtons() {
         FKEYPAGE++;
         if (FKEYPAGE > 3) {
           FKEYPAGE = 1;
-          DrawKeypad();
+          
         } // ENDIF
-        
+        DrawKeypad();
       } // ENDIF
 
       if (b == 12) {
@@ -653,22 +704,6 @@ int CheckButtons() {
         Serial.println("Select Button Pressed for Channel 0");
         // do something here - Handled in loop
       } // ENDIF
-      
-      // if (b == 13) {
-        
-      //   Serial.println("Power Button Pressed");
-      //   if (PowerOn == true)
-      //   {
-      //     DoDCCPower(0);
-      //     PowerOn = false;
-      //     key[b].drawButton(TFT_RED);
-      //   }  // ENDIF
-      //   else 
-      //   {
-      //     DoDCCPower(1);
-      //     PowerOn = true;
-      //   } // ENDELSE
-      // } // ENDIF
 
       if (b == 13) {
         
@@ -696,16 +731,18 @@ int CheckButtons() {
 
       if (b <= 10) {        // That was a function key so send the signal
 
+        FunctionKey = (b + ((FKEYPAGE-1) * 11));
         Serial.print("Function Key F");
         Serial.println(b);
-        DoDCCFunction(b, 1);
+        DoDCCFunction(FunctionKey, 1);
         delay(1000);  // allow time for the sound before turning off.
 
+        
         if (StickyKeys[b] == true) // this is a sticky key so dont turn it off
         {
           if (StickyOnOff[b] == true) // Its aleady on so turn it off
             {
-              DoDCCFunction(b, 0);
+              DoDCCFunction(FunctionKey, 0);
               StickyOnOff[b] = false;
             } // ENDIF
             else // It wasn't on so leave it on.
@@ -715,7 +752,7 @@ int CheckButtons() {
         } // ENDIF
         else
         {
-          DoDCCFunction(b, 0);
+          DoDCCFunction(FunctionKey, 0);
         } // ENDELSE
       
       } // ENDIF
@@ -731,22 +768,18 @@ int CheckButtons() {
 
 } // END FUNCTION
 
-void CopyRosterItem(int b){
-
-
-}
 //------------------------------------------------------------------------------------------
 
 int CheckRosterButtons() {
 
   uint16_t t_x = 0, t_y = 0; // To store the touch coordinates
-  int ReturnValue = 0; // value to send back - the key pressed
+  int ReturnValue = -1; // value to send back - the key pressed -1 if no key press
 
   // Pressed will be set true is there is a valid touch on the screen
   bool pressed = tft.getTouch(&t_x, &t_y);
 
   // / Check if any key coordinate boxes contain the touch coordinates
-  for (uint8_t b = 0; b < 10; b++) {
+  for (uint8_t b = 0; b < 8; b++) {
       if (pressed && RKey[b].contains(t_x, t_y)) {
         RKey[b].press(true);  // tell the button it is pressed
       } 
@@ -756,10 +789,7 @@ int CheckRosterButtons() {
   }
 
   // Check if any key has changed state
-  for (uint8_t b = 0; b < 15; b++) {
-
-    // if (b < 3) tft.setFreeFont(LABEL1_FONT);
-    // else tft.setFreeFont(LABEL2_FONT);
+  for (uint8_t b = 0; b < 8; b++) {
 
     if (RKey[b].justReleased()) {
         
@@ -775,7 +805,7 @@ int CheckRosterButtons() {
 
           Serial.print("Roster Key ");
           Serial.println(b);
-          CopyRosterItem(b);
+         
         
         }
 
@@ -783,8 +813,63 @@ int CheckRosterButtons() {
 
       ReturnValue = b; // this is the array index entry.
 
+      return ReturnValue;
     }
   }   // End for
+
+  // If we get here no function key pressed.
+
+  // now check the Exit Key
+  if (pressed && AddrKey.contains(t_x, t_y)) {
+          AddrKey.press(true);  // tell the button it is pressed
+        } 
+        else {
+          AddrKey.press(false);  // tell the button it is NOT pressed
+        }
+  if (AddrKey.justReleased()) {
+        AddrKey.drawButton();     // draw normal  
+    }
+  if (AddrKey.justPressed()) {
+      AddrKey.drawButton(true);  // draw invert
+        ReturnValue = 9;
+        Serial.print("Exit Key ");
+        
+      }    
+
+  // Now check the Up key
+
+if (pressed && UpKey.contains(t_x, t_y)) {
+          UpKey.press(true);  // tell the button it is pressed
+        } 
+        else {
+          UpKey.press(false);  // tell the button it is NOT pressed
+        }
+  if (UpKey.justReleased()) {
+        UpKey.drawButton();     // draw normal  
+    }
+  if (UpKey.justPressed()) {
+      UpKey.drawButton(true);  // draw invert
+        ReturnValue = 10;
+        Serial.print("Up Key ");
+       
+      }    
+
+  // now check the Down key
+  if (pressed && DownKey.contains(t_x, t_y)) {
+          DownKey.press(true);  // tell the button it is pressed
+        } 
+        else {
+          DownKey.press(false);  // tell the button it is NOT pressed
+        }
+  if (DownKey.justReleased()) {
+        DownKey.drawButton();     // draw normal  
+    }
+  if (DownKey.justPressed()) {
+      AddrKey.drawButton(true);  // draw invert
+        ReturnValue = 11;
+        Serial.print("Down Key ");
+        
+      }    
 
   return ReturnValue;
 
@@ -793,10 +878,11 @@ int CheckRosterButtons() {
 //------------------------------------------------------------------------------------------
 
 
-bool CheckNumberPad() {
+int CheckNumberPad() {
 
   // uses NumberKey[] array
-  bool returnvalue = false;
+  returnvalue = 0;
+
 
   uint16_t t_x = 0, t_y = 0; // To store the touch coordinates
 
@@ -813,10 +899,11 @@ bool CheckNumberPad() {
   }
 
   // Check if any key has changed state
-  for (uint8_t b = 0; b < 15; b++) {
+  for (uint8_t b = 0; b < 12; b++) {
 
-    if (b < 3) tft.setFreeFont(LABEL1_FONT);
+    if (b > 8) tft.setFreeFont(LABEL1_FONT);
     else tft.setFreeFont(LABEL2_FONT);
+    delay(10);
 
     if (NumberKey[b].justReleased()) NumberKey[b].drawButton();     // draw normal
 
@@ -824,61 +911,82 @@ bool CheckNumberPad() {
       NumberKey[b].drawButton(true);  // draw invert
 
       // if a numberpad button, append the relevant # to the numberBuffer
-      if (b <= 10) {
+      if (b <= 8) {
         if (numberIndex < NUM_LEN) {
-          numberBuffer[numberIndex] = keyLabel[b][0];
+          numberBuffer[numberIndex] = keypadLabel[b][0];
           numberIndex++;
           numberBuffer[numberIndex] = 0; // zero terminate
+          // Serial.print("Number key index ");
+          // Serial.println(numberIndex);
+          // Serial.println(keypadLabel[b]);
+          returnvalue = b;
         }
-       statusmessage(""); // Clear the old status
+      
+      statusmessage(""); // Clear the old status
       }
 
       // Del button, so delete last char
-      if (b == 10) {
-        numberBuffer[numberIndex] = 0;
+      if (b == 9) {
+        //numberBuffer[numberIndex] = NULL;
         if (numberIndex > 0) {
-          numberIndex--;
-          numberBuffer[numberIndex] = 0;//' ';
+
+          char tempBuffer[NUM_LEN + 1] = "";  
+          numberIndex = numberIndex -1;
+          
+          strncpy(tempBuffer, numberBuffer, numberIndex);
+          strcpy(numberBuffer, tempBuffer);
+
+          Serial.println("BSP key");
+          Serial.println(numberBuffer);
+          Serial.println(numberIndex);
+          Serial.println(keypadLabel[b]);
+
+          returnvalue = b;
         }
-        statusmessage(""); // Clear the old status
       }
 
-      if (b == 11) {
-        statusmessage("Sent value to serial port");
-        Serial.println(numberBuffer);
-        returnvalue = true;
+      if (b == 10) {
         
+        // this is the OK key.  Setup the address
+        ADDRESS = atoi(numberBuffer);
+
+        Serial.println(numberBuffer);
+        Serial.println("OK key"); 
+        Serial.println(keypadLabel[b]);
+        Serial.println(ADDRESS);
+        returnvalue = b;
       }
-      // we dont really check that the text field makes sense
-      // just try to call
-      if (b == 12) {
-        statusmessage("Value cleared");
-        numberIndex = 0; // Reset index to 0
-        numberBuffer[numberIndex] = 0; // Place null in buffer
-        returnvalue = false;
+
+      
+      if (b == 11) {
+        
+        //numberIndex = 0; // Reset index to 0
+        //numberBuffer[numberIndex] = 0; // Place null in buffer
+        Serial.println("Cancel key"); 
+        Serial.println(keypadLabel[b]);
+        
+        returnvalue = b;
         
       }
 
       // Update the number display field
       tft.setTextDatum(TL_DATUM);        // Use top left corner as text coord datum
       tft.setFreeFont(&FreeSans18pt7b);  // Choose a nicefont that fits box
+      delay(10);
       tft.setTextColor(DISP_TCOLOR);     // Set the font colour
 
-      // Draw the string, the value returned is the width in pixels
-      int xwidth = tft.drawString(numberBuffer, DISP_X + 4, DISP_Y + 12);
+      // Draw the string, the value returned is the width in pixels 10 changed to 5
+      int xwidth = tft.drawString(numberBuffer, DISP_X + 10, DISP_Y + 12);
 
       // Now cover up the rest of the line up by drawing a black rectangle.  No flicker this way
       // but it will not work with italic or oblique fonts due to character overlap.
-      tft.fillRect(DISP_X + 4 + xwidth, DISP_Y + 1, DISP_W - xwidth - 5, DISP_H - 2, TFT_BLACK);
+      tft.fillRect(DISP_X + 10 + xwidth, DISP_Y + 1, DISP_W - xwidth - 15, DISP_H - 2, TFT_BLACK);
 
       delay(10); // UI debouncing
     }
-  
-    if (returnvalue == true){
-      ADDRESS = atoi(numberBuffer);
 
-    }
-
-    return returnvalue;
   }
+  
+  return returnvalue;
+  
 }

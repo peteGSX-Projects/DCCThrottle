@@ -20,6 +20,7 @@ extern int ADDRESS; //loco address
 extern char LOCONAME[30];
 extern bool WiFiConnected;
 extern int CURRENTSCREENPAGE;
+extern int ROSTERPAGE;
 
 extern String DefaultRosterFkeys;
 

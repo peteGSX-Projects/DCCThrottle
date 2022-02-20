@@ -179,6 +179,38 @@ void CopyDefaults(){
   }
 }
 
+void CopyRosterItem(int b){
+
+  int ind1 = 0;
+  int ind2 = 0;
+  String RosterEntry;
+  String StringAddress;
+  String Name;
+  // b is the subscript to be used from the ROSTER array
+  // first get the loco address
+
+  RosterEntry = ROSTER[b];
+
+  Serial.print(RosterEntry);
+
+  ind1 = RosterEntry.indexOf(' ');  //finds location of SPACE between address and name
+      
+  StringAddress = RosterEntry.substring(0 , ind1);   //captures address
+  LocoAddress[CurrentChannel] = StringAddress.toInt();
+  Serial.print(" String Address - ");
+  Serial.print(StringAddress);
+  Serial.print(" Int ");
+  Serial.println(LocoAddress[CurrentChannel]);
+
+  // now get the name
+  ind2 = RosterEntry.indexOf('\0');
+  Name = RosterEntry.substring(ind1 + 1);
+  
+  Name.toCharArray(LocoName[CurrentChannel], 25);
+  Serial.println(Name);
+  Serial.println(LocoName[CurrentChannel]);
+
+}
    
 void SetupRoster(){
 

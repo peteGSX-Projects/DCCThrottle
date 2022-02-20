@@ -16,10 +16,10 @@ void DrawNumberPad();
 void MainScreen();
 void RosterScreen();
 void KeypadScreen();
-void CopyRosterItem(int b);
+
 int CheckButtons();
 int CheckRosterButtons();
-bool CheckNumberPad();
+int CheckNumberPad();
 
 
 #endif

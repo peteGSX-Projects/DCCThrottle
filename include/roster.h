@@ -6,7 +6,8 @@
 
 void ParseRoster();
 void ParseKeys();
-void CopyDefaultRoster();
+void CopyDefaults();
+void CopyRosterItem(int b);
 void SetupRoster();
 void GetFunctionKeys();
 
