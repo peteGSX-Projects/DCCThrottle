@@ -1,17 +1,17 @@
 #include <Arduino.h>
 
-//#include "DCCThrottle.h"
+#include "globals.h"
 #include "rotary.h"
 #include "display.h"
 #include "DCCWifi.h"
 
 // Rotary encoder pins
-#define PIN_A 34
-#define PIN_B 35
-#define PUSH_BTN1 32
-#define PIN_C 25
-#define PIN_D 26
-#define PUSH_BTN2 27
+#define PIN_A 25
+#define PIN_B 26
+#define PUSH_BTN1 27
+#define PIN_C 34
+#define PIN_D 35
+#define PUSH_BTN2 32
 
 // A turn counter for the rotary encoder (negative = anti-clockwise)
 int rotationCounter1 = 0;
@@ -21,8 +21,8 @@ int rotationCounter2 = 0;
 volatile bool rotaryEncoder1 = false;
 volatile bool rotaryEncoder2 = false;
 
-// Intvoid IRAM_ATTR rotary1()errupt routine just sets a flag when rotation is detected
-
+// Interrupt routine just sets a flag when rotation is detected
+void IRAM_ATTR rotary1()
 {
     rotaryEncoder1 = true;
 }
@@ -124,18 +124,19 @@ void CheckEncoders()
         if (rotationValue != 0)
         {
             rotationCounter1 += rotationValue;
-            Serial.print(rotationValue < 1 ? "L" :  "R");
-            Serial.println(rotationCounter1);
+            //Serial.print(rotationValue < 1 ? "L" :  "R");
+            //Serial.println(rotationCounter1);
             if (rotationCounter1 < 0){
                 rotationCounter1 = 0;
             }
             if (rotationCounter1 > 127) {
                 rotationCounter1 = 127;
             }
-            Serial.print("Channel 0 Value - ");
-            Serial.println(rotationCounter1 * 5);
+            //Serial.print("Channel 0 Value - ");
+            //Serial.println(rotationCounter1 * 5);
 
-            LocoSpeed[0] = rotationCounter1 * 5; // go up in fives else its too slow.
+            //LocoSpeed[0] = rotationCounter1 * 5; // go up in fives else its too slow.
+            LocoSpeed[0] = rotationCounter1 * 5;
             ShowSpeed(0);
             DoDCCThrottle(0);
 
@@ -153,16 +154,16 @@ void CheckEncoders()
         if (rotationValue != 0)
         {
             rotationCounter2 += rotationValue;
-            Serial.print(rotationValue < 1 ? "L" :  "R");
-            Serial.println(rotationCounter2);
+            //Serial.print(rotationValue < 1 ? "L" :  "R");
+            //Serial.println(rotationCounter2);
              if (rotationCounter2 < 0){
                 rotationCounter2 = 0;
             }
             if (rotationCounter2 > 127) {
                 rotationCounter2 = 127;
             }
-            Serial.print("Channel 1 Value - ");
-            Serial.println(rotationCounter2 * 5);
+            //Serial.print("Channel 1 Value - ");
+            //Serial.println(rotationCounter2 * 5);
 
             LocoSpeed[1] = rotationCounter2 * 5;
             ShowSpeed(1);
@@ -176,8 +177,8 @@ void CheckEncoders()
     if (digitalRead(PUSH_BTN1) == LOW)
     {
         //rotationCounter1 = 0;
-        Serial.print("X");
-        Serial.println(rotationCounter1);
+        //Serial.print("X");
+        //Serial.println(rotationCounter1);
 
         // Toggle the direction
         if (LocoDirection[0] == 1)
@@ -200,8 +201,8 @@ void CheckEncoders()
      if (digitalRead(PUSH_BTN2) == LOW)
     {
         //rotationCounter2 = 0;
-        Serial.print("X");
-        Serial.println(rotationCounter2);
+        //Serial.print("X");
+        //Serial.println(rotationCounter2);
  
         // Toggle the direction
         if (LocoDirection[1] == 1) 
